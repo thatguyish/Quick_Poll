@@ -4,6 +4,7 @@ import com.thatguysapp.quickpoll.domain.Poll;
 import com.thatguysapp.quickpoll.domain.Vote;
 import com.thatguysapp.quickpoll.repository.PollRepository;
 import com.thatguysapp.quickpoll.repository.VoteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import java.net.URI;
 @RestController
 public class VoteController {
 
-    @Inject
+    @Autowired
     private VoteRepository voteRepository;
 
     @RequestMapping(value="/polls/{pollId}/votes", method= RequestMethod.POST)

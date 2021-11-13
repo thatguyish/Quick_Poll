@@ -18,8 +18,6 @@ public class Poll {
     @OrderBy
     private Set<POption> options;
 
-    public Poll() {
-    }
 
     public Long getId() {
         return id;

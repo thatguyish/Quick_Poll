@@ -3,6 +3,7 @@ package com.thatguysapp.quickpoll.controller;
 import com.thatguysapp.quickpoll.domain.Poll;
 import com.thatguysapp.quickpoll.exception.ResourceNotFoundException;
 import com.thatguysapp.quickpoll.repository.PollRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +16,12 @@ import java.net.URI;
 @RestController
 public class PollController {
 
-    @Inject
+    @Autowired
     private PollRepository pollRepository;
 
     protected void verifyPoll(Long pollId) throws ResourceNotFoundException {
-        Poll poll = pollRepository.findById(pollId).orElseThrow(ResourceNotFoundException::new);
-        if(poll == null){
-            throw new ResourceNotFoundException("Poll with id" + pollId + "not found");
-        }
+        pollRepository.findById(pollId)
+                .orElseThrow(()->new ResourceNotFoundException("Poll with id" + pollId + "not found"));
     }
 
     @RequestMapping(value="/polls",method= RequestMethod.GET)

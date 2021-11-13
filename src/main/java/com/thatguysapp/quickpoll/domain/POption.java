@@ -14,8 +14,6 @@ public class POption {
     @Column(name = "OPTION_VALUE")
     private String value;
 
-    public POption() {
-    }
 
     public Long getId() {
         return id;

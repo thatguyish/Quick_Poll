@@ -4,6 +4,7 @@ import com.thatguysapp.quickpoll.domain.Vote;
 import com.thatguysapp.quickpoll.dto.OptionCount;
 import com.thatguysapp.quickpoll.dto.VoteResult;
 import com.thatguysapp.quickpoll.repository.VoteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ import java.util.Map;
 @RestController
 public class ComputeResultController {
 
-    @Inject
+    @Autowired
     private VoteRepository voteRepository;
 
     @RequestMapping(value="/computeresult", method = RequestMethod.GET)
@@ -35,13 +36,14 @@ public class ComputeResultController {
                 optionCount = new OptionCount();
                 optionCount.setOptionId(vote.getOption().getId());
                 tempMap.put(vote.getOption().getId(), optionCount);
+                optionCount.setCount(0L);
             }
             optionCount.setCount(optionCount.getCount() + 1);
         }
-        voteResult.setTotalVotes(totalVotes);
 
+        voteResult.setTotalVotes(totalVotes);
+        voteResult.setResults(tempMap.values());
 
         return new ResponseEntity<VoteResult>(voteResult, HttpStatus.OK);
     }
-
 }
