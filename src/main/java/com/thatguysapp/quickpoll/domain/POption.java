@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 public class POption {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "OPTION_ID")
     private Long id;
 
