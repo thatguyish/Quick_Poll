@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.inject.Inject;
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -21,17 +21,17 @@ public class PollController {
 
     protected void verifyPoll(Long pollId) throws ResourceNotFoundException {
         pollRepository.findById(pollId)
-                .orElseThrow(()->new ResourceNotFoundException("Poll with id" + pollId + "not found"));
+                .orElseThrow(()->new ResourceNotFoundException("Poll with id " + pollId + " not found"));
     }
 
     @RequestMapping(value="/polls",method= RequestMethod.GET)
     public ResponseEntity<Iterable<Poll>> getAllPolls() {
         Iterable<Poll> polls = pollRepository.findAll();
-        return new ResponseEntity(pollRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity(polls, HttpStatus.OK);
     }
 
     @RequestMapping(value="/polls", method= RequestMethod.POST)
-    public ResponseEntity<?> createPoll(@RequestBody Poll poll){
+    public ResponseEntity<?> createPoll(@Valid @RequestBody Poll poll){
         pollRepository.save(poll);
 
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -41,7 +41,7 @@ public class PollController {
                 .buildAndExpand(poll.getId())
                 .toUri();
         responseHeaders.setLocation(newPollUri);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(null,responseHeaders,HttpStatus.CREATED);
     }
 
     @RequestMapping(value="/polls/{pollId}", method= RequestMethod.GET)
